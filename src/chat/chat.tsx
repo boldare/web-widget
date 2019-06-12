@@ -221,7 +221,8 @@ export default class Chat extends Component<IChatProps, IChatState> {
 	    }
 
 	    if (this.state.messages.length === 0 && !this.messagesListener) {
-	        const unixTimestamp = String(Date.now()).substring(0, 9);
+	        const stringifiedTimestamp = String(Date.now()).substring(0, 9);
+	        const unixTimestamp = Number(stringifiedTimestamp);
 
 	        this.setState({
                 since: unixTimestamp,
@@ -259,6 +260,6 @@ enum ReplyType {
 
 interface IChatState {
     messages: IMessage[],
-    since: number | string;
+    since: number;
     replyType: string,
 }
