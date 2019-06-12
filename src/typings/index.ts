@@ -76,7 +76,8 @@ export interface IConfiguration {
     /**
      * The URL of the BotMan route / server to use.
      */
-    chatServer: string,/**
+    chatServer: string,
+    /**
      * The URL of the BotMan message route / server to use.
      */
     messagesServer: string,
