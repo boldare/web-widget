@@ -39,6 +39,12 @@ export interface IMessage {
     elements?: IElement[],
 }
 
+export interface IApiMessage {
+    content: string;
+    created_at: number;
+    id: string;
+}
+
 export interface IAttachment {
     url?: string,
     type?: string,
@@ -71,6 +77,10 @@ export interface IConfiguration {
      * The URL of the BotMan route / server to use.
      */
     chatServer: string,
+    /**
+     * The URL of the BotMan message route / server to use.
+     */
+    messagesServer: string,
     /**
      * The location of your chat frame URL / route.
      */
