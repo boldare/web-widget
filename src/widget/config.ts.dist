@@ -1,6 +1,7 @@
 export default {
     chatServer: '/botman',
     frameEndpoint: '/botman/chat',
+    messagesServer: '/messages',
     timeFormat: 'HH:MM',
     dateTimeFormat: 'm/d/yy HH:MM',
     title: 'BotMan Widget',
