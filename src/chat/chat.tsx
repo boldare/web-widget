@@ -2,6 +2,7 @@ import { h, Component } from "preact";
 import MessageArea from "./message-area";
 import { botman } from "./botman";
 import {IMessage, IConfiguration, IApiMessage} from "../typings";
+import { setItem, getItem } from "../utils/storage";
 
 export default class Chat extends Component<IChatProps, IChatState> {
 
@@ -17,8 +18,13 @@ export default class Chat extends Component<IChatProps, IChatState> {
         this.botman = botman;
         this.botman.setUserId(this.props.userId);
         this.botman.setChatServer(this.props.conf.chatServer, this.props.conf.messagesServer);
-        this.setState({ messages : [] });
+
+        const messageKey = `messages-${this.props.userId}`;
+        const messages: IMessage[] = JSON.parse(getItem(messageKey)) || [];
+
+        this.setState({ messages });
         this.setState({ replyType : ReplyType.Text });
+        this.setState({ messageKey })
     }
 
     componentDidMount() {
@@ -220,8 +226,8 @@ export default class Chat extends Component<IChatProps, IChatState> {
 	        msg.attachment = {}; // TODO: This renders IAttachment useless
 	    }
 
-	    if (this.state.messages.length === 0 && !this.messagesListener) {
-	        const stringifiedTimestamp = String(Date.now()).substring(0, 9);
+	    if (!this.messagesListener) {
+	        const stringifiedTimestamp = String(Date.now()).substring(0, 10);
 	        const unixTimestamp = Number(stringifiedTimestamp);
 
 	        this.setState({
@@ -238,6 +244,8 @@ export default class Chat extends Component<IChatProps, IChatState> {
 	    this.setState({
 	        messages: this.state.messages
 	    });
+
+	    setItem(this.state.messageKey, JSON.stringify(this.state.messages));
 
 	    if (msg.additionalParameters && msg.additionalParameters.replyType) {
 	        this.setState({
@@ -260,6 +268,7 @@ enum ReplyType {
 
 interface IChatState {
     messages: IMessage[],
+    messageKey: string,
     since: number;
     replyType: string,
 }

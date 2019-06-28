@@ -2,12 +2,15 @@ import {h, render} from 'preact';
 import Widget from './widget';
 import {defaultConfiguration} from './configuration';
 import {IConfiguration} from "../typings";
+import { getItem, setItem } from "../utils/storage";
 
 if (window.attachEvent) {
     window.attachEvent('onload', injectChat);
 } else {
     window.addEventListener('load', injectChat, false);
 }
+
+const USER_ID_KEY = 'userId';
 
 function getUrlParameter(name: string, defaults = '') {
     name = name.replace(/[[]/, '\\[').replace(/[]]/, '\\]');
@@ -17,7 +20,14 @@ function getUrlParameter(name: string, defaults = '') {
 }
 
 function getUserId(conf: IConfiguration) {
-    return conf.userId || generateRandomId();
+    const userId = conf.userId || generateRandomId();
+    const userIdFromStorage = getItem(USER_ID_KEY);
+
+    if (userIdFromStorage === null) {
+        setItem(USER_ID_KEY, userId);
+    }
+
+    return getItem(USER_ID_KEY);
 }
 
 function generateRandomId() {
