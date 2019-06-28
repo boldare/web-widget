@@ -1,10 +1,10 @@
 export default {
-    chatServer: '/botman',
-    frameEndpoint: '/botman/chat',
-    messagesServer: '/messages',
+    chatServer: '/unifonic',
+    messagesServer: '/unifonic/messages',
+    frameEndpoint: '/unifonic/chat',
     timeFormat: 'HH:MM',
     dateTimeFormat: 'm/d/yy HH:MM',
-    title: 'BotMan Widget',
+    title: 'Unifonic Widget',
     cookieValidInDays: 1,
     introMessage: '',
     placeholderText: 'Send a message...',
@@ -20,8 +20,8 @@ export default {
     mobileHeight: '100%',
     mobileWidth: '300px',
     videoHeight: 160,
-    aboutLink: 'https://botman.io',
-    aboutText: '⚡ Powered by BotMan',
+    aboutLink: 'https://www.unifonic.com/',
+    aboutText: 'Unifonic',
     chatId: '',
     userId: '',
     alwaysUseFloatingButton: false,
@@ -31,3 +31,4 @@ export default {
     echoEventName: '.message.created',
     echoChannelType: 'private'
 };
+

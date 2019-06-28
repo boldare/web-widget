@@ -12,7 +12,7 @@ if (window.attachEvent) {
 function getUrlParameter(name: string, defaults = '') {
     name = name.replace(/[[]/, '\\[').replace(/[]]/, '\\]');
     let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    let results = regex.exec(document.getElementById('botmanWidget').getAttribute('src'));
+    let results = regex.exec(document.getElementById('unifonicWidget').getAttribute('src'));
     return results === null ? defaults : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
@@ -26,7 +26,7 @@ function generateRandomId() {
 
 function injectChat() {
     let root = document.createElement('div');
-    root.id = 'botmanWidgetRoot';
+    root.id = 'unifonicWidgetRoot';
     document.getElementsByTagName('body')[0].appendChild(root);
 
     let settings = {};
@@ -34,7 +34,7 @@ function injectChat() {
         settings = JSON.parse(getUrlParameter('settings', '{}'));
     } catch (e) { }
 
-    const dynamicConf = window.botmanWidget || {} as IConfiguration; // these configuration are loaded when the chat frame is opened
+    const dynamicConf = window.unifonicWidget || {} as IConfiguration; // these configuration are loaded when the chat frame is opened
 
     dynamicConf.userId = getUserId({...defaultConfiguration, ...dynamicConf});
 
@@ -58,5 +58,5 @@ function injectChat() {
 }
 
 declare global {
-    interface Window { attachEvent: Function, botmanWidget: IConfiguration }
+    interface Window { attachEvent: Function, unifonicWidget: IConfiguration }
 }

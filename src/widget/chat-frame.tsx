@@ -9,10 +9,10 @@ export default class ChatFrame extends Component<any, any> {
     }
 
     render({iFrameSrc, isMobile, conf}: IChatFrameProps,{}) {
-        let dynamicConf = window.botmanWidget || {} as IConfiguration; // these configuration are loaded when the chat frame is opened
+        let dynamicConf = window.unifonicWidget || {} as IConfiguration; // these configuration are loaded when the chat frame is opened
         let encodedConf = encodeURIComponent(JSON.stringify({...conf, ...dynamicConf}));
         return (
-            <iframe id="chatBotManFrame" src={iFrameSrc + '?conf=' + encodedConf}
+            <iframe id="chatUnifonicFrame" src={iFrameSrc + '?conf=' + encodedConf}
                 width='100%'
                 height={isMobile ? '94%' : '100%'}
                 frameBorder='0'
