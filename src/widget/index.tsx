@@ -2,6 +2,7 @@ import {h, render} from 'preact';
 import Widget from './widget';
 import {defaultConfiguration} from './configuration';
 import {IConfiguration} from "../typings";
+import { getItem, setItem } from "../utils/storage";
 
 if (window.attachEvent) {
     window.attachEvent('onload', injectChat);
@@ -9,15 +10,24 @@ if (window.attachEvent) {
     window.addEventListener('load', injectChat, false);
 }
 
+const USER_ID_KEY = 'userId';
+
 function getUrlParameter(name: string, defaults = '') {
     name = name.replace(/[[]/, '\\[').replace(/[]]/, '\\]');
     let regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    let results = regex.exec(document.getElementById('botmanWidget').getAttribute('src'));
+    let results = regex.exec(document.getElementById('unifonicWidget').getAttribute('src'));
     return results === null ? defaults : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
 function getUserId(conf: IConfiguration) {
-    return conf.userId || generateRandomId();
+    const userId = conf.userId || generateRandomId();
+    const userIdFromStorage = getItem(USER_ID_KEY);
+
+    if (userIdFromStorage === null) {
+        setItem(USER_ID_KEY, userId);
+    }
+
+    return getItem(USER_ID_KEY);
 }
 
 function generateRandomId() {
@@ -26,7 +36,7 @@ function generateRandomId() {
 
 function injectChat() {
     let root = document.createElement('div');
-    root.id = 'botmanWidgetRoot';
+    root.id = 'unifonicWidgetRoot';
     document.getElementsByTagName('body')[0].appendChild(root);
 
     let settings = {};
@@ -34,7 +44,7 @@ function injectChat() {
         settings = JSON.parse(getUrlParameter('settings', '{}'));
     } catch (e) { }
 
-    const dynamicConf = window.botmanWidget || {} as IConfiguration; // these configuration are loaded when the chat frame is opened
+    const dynamicConf = window.unifonicWidget || {} as IConfiguration; // these configuration are loaded when the chat frame is opened
 
     dynamicConf.userId = getUserId({...defaultConfiguration, ...dynamicConf});
 
@@ -58,5 +68,5 @@ function injectChat() {
 }
 
 declare global {
-    interface Window { attachEvent: Function, botmanWidget: IConfiguration }
+    interface Window { attachEvent: Function, unifonicWidget: IConfiguration }
 }
